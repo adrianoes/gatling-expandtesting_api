@@ -1,0 +1,30 @@
+name: Gatling Performance Tests
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  gatling_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 11
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: maven
+
+      - name: Run Gatling Tests
+        run: mvn gatling:test
+
+      - name: Upload Gatling Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gatling-report
+          path: target/gatling

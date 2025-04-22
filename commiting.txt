@@ -1,0 +1,33 @@
+Creating a project and commiting for the first time:
+
+git init
+git remote add origin git@github.com:adrianoes/gatling-expandtesting_api.git
+git branch -M main
+git remote set-url origin git@github.com:adrianoes/gatling-expandtesting_api.git
+git status
+git add .
+git commit -m "First commit. Basic structure"
+git push -u origin main
+
+
+Commiting for second time and so on:
+
+git status
+git add .
+git commit -m "negative and tags done"
+git push -u origin main 
+
+need to fix report, converting it to html or catching the right html report in target folder, close the app between tests 
+
+(refresh page after api cmds)
+size limit----\-------------------------------------------------------------------------\
+commits history are placed in C:\gatling-expandtesting_api\.git\logs\refs\heads
+
+@Tag("Health")
+
+
+@Tag("Notes")
+@Tag("Negative")
+
+@Tag("Users")
+@Tag("Negative")
