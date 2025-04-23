@@ -19,8 +19,9 @@ jobs:
           java-version: '11'
           cache: maven
 
-      - name: Run Gatling Tests
-        run: mvn gatling:test -Dgatling.simulationClass=tests.CreateUserSimulations -DtestType=load
+      - name: Run Gatling Tests for desired simulation
+        run: |
+          mvn gatling:test -Dgatling.simulationClass=tests.HealthSimulations -P smoke
 
       - name: Upload Gatling Reports
         uses: actions/upload-artifact@v4

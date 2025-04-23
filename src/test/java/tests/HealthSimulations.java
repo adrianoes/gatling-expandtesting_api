@@ -37,7 +37,7 @@ public class HealthSimulations extends Simulation {
         if (testType.equals("smoke")) {
             setUp(
                     scenario.injectOpen(
-                            rampUsers(vu).during(Duration.ofSeconds(30))
+                            rampUsers(vu).during(Duration.ofSeconds(10))
                     )
             ).protocols(httpProtocol).assertions(assertion);
 
@@ -45,7 +45,7 @@ public class HealthSimulations extends Simulation {
             setUp(
                     scenario.injectOpen(
                             rampUsers(10).during(Duration.ofSeconds(10)),
-                            constantUsersPerSec(10).during(Duration.ofSeconds(30)).randomized(),
+                            constantUsersPerSec(10).during(Duration.ofSeconds(10)).randomized(),
                             rampUsers(0).during(Duration.ofSeconds(10))
                     )
             ).protocols(httpProtocol).assertions(assertion);

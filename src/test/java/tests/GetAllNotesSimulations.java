@@ -6,22 +6,23 @@ import static io.gatling.javaapi.http.HttpDsl.*;
 import io.gatling.javaapi.core.*;
 import io.gatling.javaapi.http.*;
 
-import java.time.Duration;
-import java.util.*;
-
 import utils.FakerUtils;
 
-public class CreateUserSimulations extends Simulation {
+import java.time.Duration;
+import java.util.Map;
 
-    private final int vu = Integer.getInteger("vu", 10);  // Número de VUs
+public class GetAllNotesSimulations extends Simulation {
+
+    private final int vu = Integer.getInteger("vu", 10);
     private final String testType = System.getProperty("testType", "smoke").toLowerCase();
+
+    Map<String, Object> fakerData = FakerUtils.generateUserData();
 
     private final HttpProtocolBuilder httpProtocol = http.baseUrl("https://practice.expandtesting.com")
             .acceptHeader("application/json")
-            .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36");
+            .userAgentHeader("Gatling Test");
 
-    // Definindo o cenário de cada VU
-    private final ScenarioBuilder scenario = scenario("Create, Login and Delete User Scenario")
+    private final ScenarioBuilder scenario = scenario("Create Two Notes and Retrieve All Notes Scenario")
             .exec(session -> {
                 // Gerar dados únicos para cada VU dentro da sessão
                 Map<String, Object> userData = FakerUtils.generateUserData();
@@ -44,6 +45,7 @@ public class CreateUserSimulations extends Simulation {
                             jsonPath("$.data.id").saveAs("userId") // Armazenando o userId para o VU atual
                     )
             )
+
             .exec(http("Login User Request")
                     .post("/notes/api/users/login")
                     .formParam("email", "#{email}")
@@ -57,6 +59,59 @@ public class CreateUserSimulations extends Simulation {
                             jsonPath("$.data.token").saveAs("authToken")
                     )
             )
+
+            // Create First Note
+            .exec(http("Create First Note")
+                    .post("/notes/api/notes")
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .header("x-auth-token", "#{authToken}")
+                    .formParam("title", fakerData.get("noteTitle"))
+                    .formParam("description", fakerData.get("noteDescription"))
+                    .formParam("category", fakerData.get("noteCategory"))
+                    .check(jsonPath("$.data.id").saveAs("noteId1"))
+                    .check(jsonPath("$.data.title").saveAs("note_title_1"))
+                    .check(jsonPath("$.data.description").saveAs("note_description_1"))
+                    .check(jsonPath("$.data.category").saveAs("note_category_1"))
+                    .check(jsonPath("$.data.updated_at").saveAs("note_updated_at_1"))
+            )
+
+            // Create Second Note
+            .exec(http("Create Second Note")
+                    .post("/notes/api/notes")
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .header("x-auth-token", "#{authToken}")
+                    .formParam("title", fakerData.get("noteTitle2"))
+                    .formParam("description", fakerData.get("noteDescription2"))
+                    .formParam("category", fakerData.get("noteCategory2"))
+                    .check(jsonPath("$.data.id").saveAs("noteId2"))
+                    .check(jsonPath("$.data.title").saveAs("note_title_2"))
+                    .check(jsonPath("$.data.description").saveAs("note_description_2"))
+                    .check(jsonPath("$.data.category").saveAs("note_category_2"))
+                    .check(jsonPath("$.data.updated_at").saveAs("note_updated_at_2"))
+            )
+
+            // Get All Notes
+            .exec(http("Get All Notes")
+                    .get("/notes/api/notes")
+                    .header("x-auth-token", "#{authToken}")
+                    .check(jsonPath("$.success").is("true"))
+                    .check(jsonPath("$.status").is("200"))
+                    .check(jsonPath("$.message").is("Notes successfully retrieved"))
+
+                    // Check second note (index 0)
+                    .check(jsonPath("$.data[0].title").is(session -> session.getString("note_title_2")))
+                    .check(jsonPath("$.data[0].description").is(session -> session.getString("note_description_2")))
+                    .check(jsonPath("$.data[0].category").is(session -> session.getString("note_category_2")))
+                    .check(jsonPath("$.data[0].updated_at").is(session -> session.getString("note_updated_at_2")))
+
+                    // Check first note (index 1)
+                    .check(jsonPath("$.data[1].title").is(session -> session.getString("note_title_1")))
+                    .check(jsonPath("$.data[1].description").is(session -> session.getString("note_description_1")))
+                    .check(jsonPath("$.data[1].category").is(session -> session.getString("note_category_1")))
+                    .check(jsonPath("$.data[1].updated_at").is(session -> session.getString("note_updated_at_1")))
+            )
+
+
             .exec(http("Delete User Request")
                     .delete("/notes/api/users/delete-account")
                     .header("x-auth-token", "#{authToken}")
@@ -73,7 +128,7 @@ public class CreateUserSimulations extends Simulation {
         if (testType.equals("smoke")) {
             setUp(
                     scenario.injectOpen(
-                            rampUsers(vu).during(Duration.ofSeconds(10))  // Iniciando os VUs de forma escalonada
+                            rampUsers(vu).during(Duration.ofSeconds(10))
                     )
             ).protocols(httpProtocol).assertions(assertion);
 

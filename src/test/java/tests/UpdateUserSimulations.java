@@ -11,26 +11,25 @@ import java.util.*;
 
 import utils.FakerUtils;
 
-public class CreateUserSimulations extends Simulation {
+public class UpdateUserSimulations extends Simulation {
 
-    private final int vu = Integer.getInteger("vu", 10);  // Número de VUs
+    private final int vu = Integer.getInteger("vu", 10);
     private final String testType = System.getProperty("testType", "smoke").toLowerCase();
 
     private final HttpProtocolBuilder httpProtocol = http.baseUrl("https://practice.expandtesting.com")
             .acceptHeader("application/json")
             .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36");
 
-    // Definindo o cenário de cada VU
-    private final ScenarioBuilder scenario = scenario("Create, Login and Delete User Scenario")
+    private final ScenarioBuilder scenario = scenario("Create, Login, Update and Delete User Scenario")
             .exec(session -> {
-                // Gerar dados únicos para cada VU dentro da sessão
                 Map<String, Object> userData = FakerUtils.generateUserData();
 
-                // Armazenar os dados no contexto da sessão, isolando cada VU
                 return session.set("name", userData.get("name"))
                         .set("email", userData.get("email"))
                         .set("password", userData.get("password"))
-                        .set("userId", userData.get("userId"));
+                        .set("updatedName", userData.get("updatedName"))
+                        .set("phone", userData.get("phone"))
+                        .set("company", userData.get("company"));
             })
             .exec(http("Create User Request")
                     .post("/notes/api/users/register")
@@ -41,7 +40,8 @@ public class CreateUserSimulations extends Simulation {
                             jsonPath("$.success").is("true"),
                             jsonPath("$.status").is("201"),
                             jsonPath("$.message").is("User account created successfully"),
-                            jsonPath("$.data.id").saveAs("userId") // Armazenando o userId para o VU atual
+                            jsonPath("$.data.id").exists(),
+                            jsonPath("$.data.id").saveAs("userId")
                     )
             )
             .exec(http("Login User Request")
@@ -52,9 +52,25 @@ public class CreateUserSimulations extends Simulation {
                             jsonPath("$.success").is("true"),
                             jsonPath("$.status").is("200"),
                             jsonPath("$.message").is("Login successful"),
-                            jsonPath("$.data.id").isEL("#{userId}"),  // Acessando o userId específico do VU
+                            jsonPath("$.data.id").isEL("#{userId}"),
                             jsonPath("$.data.token").exists(),
                             jsonPath("$.data.token").saveAs("authToken")
+                    )
+            )
+            .exec(http("Update User Request")
+                    .patch("/notes/api/users/profile")
+                    .header("x-auth-token", "#{authToken}")
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .formParam("name", "#{updatedName}")
+                    .formParam("phone", "#{phone}")
+                    .formParam("company", "#{company}")
+                    .check(
+                            jsonPath("$.success").is("true"),
+                            jsonPath("$.status").is("200"),
+                            jsonPath("$.message").is("Profile updated successful"),
+                            jsonPath("$.data.name").isEL("#{updatedName}"),
+                            jsonPath("$.data.phone").isEL("#{phone}"),
+                            jsonPath("$.data.company").isEL("#{company}")
                     )
             )
             .exec(http("Delete User Request")
@@ -73,7 +89,7 @@ public class CreateUserSimulations extends Simulation {
         if (testType.equals("smoke")) {
             setUp(
                     scenario.injectOpen(
-                            rampUsers(vu).during(Duration.ofSeconds(10))  // Iniciando os VUs de forma escalonada
+                            rampUsers(vu).during(Duration.ofSeconds(10))
                     )
             ).protocols(httpProtocol).assertions(assertion);
 

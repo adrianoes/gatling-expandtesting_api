@@ -7,9 +7,8 @@
     <list default="true" id="0b7e04c7-ef3a-4121-84d3-f61d879f7bdb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.github/workflows/gatling.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/gatling.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commiting.txt" beforeDir="false" afterPath="$PROJECT_DIR$/commiting.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/tests/CreateUserSimulations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/tests/CreateUserSimulations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/tests/HealthSimulations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/tests/HealthSimulations.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
