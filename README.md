@@ -84,10 +84,10 @@ and the build tag in the pom.xml file, now, should be something like:
 <!-- - Open command prompt in the pom.xml directory (e.g. C:\Users\<user_name>\IdeaProjects\gatling-expandtesting_api) and Execute ```mvn clean install``` to run all to removes previous build files while compiles the source code an execute the tests.
 - Hit :point_right:**Testing** button on left side bar in IntelliJ and choose the tests to execute.
 - Go to TestRunner.java file and leave only the desired test combination uncommented, according to its tags. 
-- Execute ```mvn clean install -Dgroups="Negative"``` command to run only negative tests.
-- Execute ```mvn clean install -DexcludedGroups="Negative"``` command to run all tests except the negative ones.
-- Execute ```mvn clean install -Dgroups="Users,Negative"``` command to run all tests that belong to either users or negative groups.
-- Execute ```mvn clean install -Dgroups="Users" -DexcludedGroups="Negative"``` command to run all users tests except the negative ones. -->
+- Execute ```mvn gatling:test -DtestType=health,smoke``` command to run tests with both Health and Smoke tags.
+- Execute ```mvn gatling:test -DtestType=smoke``` command to run only smoke tests. 
+- Execute ```mvn gatling:test -DtestType=user,smoke,negative``` command to run tests with User, Smoke, and Negative tags.
+- Execute ```mvn gatling:test -DtestType=user,health,smoke -DexcludeTags=negative``` command to run tests with User, Health, and Smoke tags excluding Negative tests.
 - Execute ```mvn gatling:test``` command to run all tests.
 
 # Support:
