@@ -14,7 +14,7 @@ Commiting for second time and so on:
 
 git status
 git add .
-git commit -m "adapting workflow and docs. miss other tests and negative tests"
+git commit -m "adding createuser simulation, test types, faker class and updating docs. miss other simulations"
 git push -u origin main 
 
 need to fix report, converting it to html or catching the right html report in target folder, close the app between tests 

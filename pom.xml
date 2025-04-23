@@ -24,6 +24,27 @@
       <version>${gatling.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!--  https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind  -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.15.0</version>
+    </dependency>
+
+    <!--  https://mvnrepository.com/artifact/com.github.javafaker/javafaker  -->
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+
+    <!--  https://mvnrepository.com/artifact/org.json/json  -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20210307</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -45,7 +66,6 @@
         <artifactId>gatling-maven-plugin</artifactId>
         <version>${gatling-maven-plugin.version}</version>
         <configuration>
-          <!-- Enterprise Cloud (https://cloud.gatling.io/) configuration reference: https://docs.gatling.io/reference/integrations/build-tools/maven-plugin/#running-your-simulations-on-gatling-enterprise-cloud -->
         </configuration>
       </plugin>
     </plugins>

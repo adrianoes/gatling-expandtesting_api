@@ -11,6 +11,9 @@ API testing using [expandtesting docs](https://practice.expandtesting.com/notes/
 | Maven                                          | 3.9.9          | -                                                               |
 | Maven Surefire Plugin maven dependency         | 3.5.3          | -                                                               |
 | Gatling                                        | 3.13.5         | -                                                               |
+| Jackson Databind Maven Repository              | 2.15.0         | -                                                               |
+| Java Faker Maven Repository                    | 1.0.2          | -                                                               |
+| JSON In Java Maven Repository                  | 20210307       | -                                                               |
 
 # Installation:
 
@@ -37,7 +40,10 @@ API testing using [expandtesting docs](https://practice.expandtesting.com/notes/
   - :white_check_mark: **Add sample code**,
   - :white_check_mark: **Generate code with onboarding tips**.
 Hit :point_right: **Create**.
-- See [gatling download page](https://docs.gatling.io/reference/install/oss/) and :point_right:**Download Gatling for Maven-Java**. Unzip the downloaded zip file in the desired directory (e.g. C:\Users\<user_name>\IdeaProjects\gatling-expandtesting_api) an open it in Intellij. The dependency tag in the pom.xml file, now, should be something like:
+- See [gatling download page](https://docs.gatling.io/reference/install/oss/) and :point_right:**Download Gatling for Maven-Java**. Unzip the downloaded zip file in the desired directory (e.g. C:\Users\<user_name>\IdeaProjects\gatling-expandtesting_api) an open it in Intellij. 
+- See [Jackson Databind](https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind/2.15.0), copy the maven dependency code and paste it in the dependency tag.
+- See [Java Faker](https://mvnrepository.com/artifact/com.github.javafaker/javafaker/1.0.2), copy the maven dependency code and paste it in the dependency tag.
+- See [JSON In Java](https://mvnrepository.com/artifact/org.json/json/20210307), copy the maven dependency code and paste it in the dependency tag. Hit :point_right: **Sync maven changes**. Your dependency tag in the pom.xml file, now, should be something like:
 
   ```
   <dependencies>
@@ -46,6 +52,27 @@ Hit :point_right: **Create**.
       <artifactId>gatling-charts-highcharts</artifactId>
       <version>${gatling.version}</version>
       <scope>test</scope>
+    </dependency>
+
+    <!--  https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind  -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.15.0</version>
+    </dependency>
+
+    <!--  https://mvnrepository.com/artifact/com.github.javafaker/javafaker  -->
+    <dependency>
+      <groupId>com.github.javafaker</groupId>
+      <artifactId>javafaker</artifactId>
+      <version>1.0.2</version>
+    </dependency>
+
+    <!--  https://mvnrepository.com/artifact/org.json/json  -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20210307</version>
     </dependency>
   </dependencies>
   ``` 
@@ -72,7 +99,6 @@ and the build tag in the pom.xml file, now, should be something like:
         <artifactId>gatling-maven-plugin</artifactId>
         <version>${gatling-maven-plugin.version}</version>
         <configuration>
-          <!-- Enterprise Cloud (https://cloud.gatling.io/) configuration reference: https://docs.gatling.io/reference/integrations/build-tools/maven-plugin/#running-your-simulations-on-gatling-enterprise-cloud -->
         </configuration>
       </plugin>
     </plugins>
@@ -81,14 +107,9 @@ and the build tag in the pom.xml file, now, should be something like:
 
 # Tests:
 
-<!-- - Open command prompt in the pom.xml directory (e.g. C:\Users\<user_name>\IdeaProjects\gatling-expandtesting_api) and Execute ```mvn clean install``` to run all to removes previous build files while compiles the source code an execute the tests.
-- Hit :point_right:**Testing** button on left side bar in IntelliJ and choose the tests to execute.
-- Go to TestRunner.java file and leave only the desired test combination uncommented, according to its tags. 
-- Execute ```mvn gatling:test -DtestType=health,smoke``` command to run tests with both Health and Smoke tags.
-- Execute ```mvn gatling:test -DtestType=smoke``` command to run only smoke tests. 
-- Execute ```mvn gatling:test -DtestType=user,smoke,negative``` command to run tests with User, Smoke, and Negative tags.
-- Execute ```mvn gatling:test -DtestType=user,health,smoke -DexcludeTags=negative``` command to run tests with User, Health, and Smoke tags excluding Negative tests.
-- Execute ```mvn gatling:test``` command to run all tests.
+- Open command prompt in the pom.xml directory (e.g. C:\Users\<user_name>\IdeaProjects\gatling-expandtesting_api) and Execute ```mvn clean install``` to run all to removes previous build files while compiles the source code.
+- Hit :point_right:**Testing** button on left side bar in IntelliJ and choose the tests to execute. 
+- Execute ```mvn gatling:test -Dgatling.simulationClass=tests.CreateUserSimulations -DtestType=load``` command to run CreateUserSimulations load test. 
 
 # Support:
 
