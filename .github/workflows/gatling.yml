@@ -19,13 +19,34 @@ jobs:
           java-version: '11'
           cache: maven
 
-      - name: Run Gatling Tests for desired simulation
+      - name: Run Gatling Simulations Sequentially
         run: |
-          mvn gatling:test -Dgatling.simulationClass=tests.HealthSimulations -P smoke
+          simulations=(
+            HealthSimulations
+            CreateUserSimulations
+            GetUserSimulations
+            UpdateUserSimulations
+            UpdateUserPasswordSimulations
+            LogoutUserSimulations
+            CreateNoteSimulations
+            GetNoteSimulations
+            UpdateNoteSimulations
+            UpdateNoteStatusSimulations
+            GetAllNotesSimulations
+            DeleteNoteSimulations
+          )
+
+          for sim in "${simulations[@]}"
+          do
+            echo "=== Running simulation: $sim ==="
+            mvn gatling:test -Dgatling.simulationClass=tests.$sim -P smoke
+            echo "=== Sleeping 60s before next simulation ==="
+            sleep 60
+          done
 
       - name: Upload Gatling Reports
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: gatling-report
+          name: gatling-reports
           path: target/gatling
