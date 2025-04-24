@@ -107,17 +107,20 @@ and the build tag in the pom.xml file, now, should be something like:
 
 # Tests:
 
-- Open command prompt in the pom.xml directory (e.g. C:\Users\<user_name>\IdeaProjects\gatling-expandtesting_api) and Execute ```mvn clean install``` to run all to removes previous build files while compiles the source code.
-- Hit :point_right:**Testing** button on left side bar in IntelliJ and choose the tests to execute. 
-- Execute ```mvn gatling:test -Dgatling.simulationClass=tests.CreateUserSimulations -DtestType=load``` command to run CreateUserSimulations load test. 
+- Open command prompt in the pom.xml directory (e.g. C:\Users\<user_name>\IdeaProjects\gatling-expandtesting_api) and execute ```mvn clean install``` to remove previous build files while compile the source code. Then, execute ```mvn gatling:test -Dgatling.simulationClass=tests.CreateUserSimulations -DtestType=load``` command to run CreateUserSimulations load test. 
+- Open command prompt in the pom.xml directory (e.g. C:\Users\<user_name>\IdeaProjects\gatling-expandtesting_api) and execute ```mvn clean install``` to remove previous build files while compile the source code. Inside the run_tests.bat file, change test type (e.g. smoke, load, etc) in the ```mvn gatling:test -Dgatling.simulationClass=tests.%%s -P smoke``` command, input only the simulations to be executed and execute ```cmd //c run_tests.bat``` to run all the selected type tests inside the selected simulations. Same thought applies to the workflow of this project. 
 
 # Support:
 
+- [Gatling documentation](https://docs.gatling.io/?utm_source=chatgpt.com)
+- [Create your first Java-based simulation](https://docs.gatling.io/tutorials/scripting-intro/)
+- [Gatling Maven Plugin](https://docs.gatling.io/reference/integrations/build-tools/maven-plugin/?utm_source=chatgpt.com)
+- [Start your simulations on Gatling Enterprise](https://docs.gatling.io/reference/integrations/build-tools/maven-plugin/?utm_source=chatgpt.com#start-your-simulations-on-gatling-enterprise)
 - [Maven repositories](https://mvnrepository.com/)
 - [Package com.github.javafaker](https://javadoc.io/static/com.github.javafaker/javafaker/1.0.2/com/github/javafaker/package-summary.html)
 - [ChatGPT](https://chatgpt.com/)
 
 # Tips:
 
-- When needed, open pom.xml directory and execute ```mvn clean install```. It removes previous build files to ensure a clean environment, while compiles the source code and runs tests to compile the automation again. 
+- Open command prompt in the pom.xml directory (e.g. C:\Users\<user_name>\IdeaProjects\gatling-expandtesting_api) and execute ```mvn clean install``` to remove previous build files while compile the source code. Do this everytime before executing test commands. 
 
